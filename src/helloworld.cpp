@@ -11,6 +11,6 @@
 
 using namespace std;
 
-void hello_world() {
+void hello_world(void) {
 	cout << "Hello World!!" << endl;
 }

@@ -9,6 +9,6 @@
 #ifndef _HELLOWORD_H_
 #define _HELLOWORD_H_
 
-void hello_world();
+void hello_world(void);
 
 #endif
