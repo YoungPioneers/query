@@ -13,8 +13,8 @@
 using namespace std;
 
 void usage(void) {
-	cout << "Usage:" << endl;
-	cout << "	q++ 'select count(*) from example.csv where id > 100'" << endl;
+	cerr << "Usage:" << endl;
+	cerr << "	q++ 'select count(*) from example.csv where id > 100'" << endl;
 }
 
 
@@ -32,4 +32,3 @@ int main(int n, char **args) {
 	hello_world();
 	return 0;
 }
-
