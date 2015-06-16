@@ -7,7 +7,7 @@
 */
 
 
-#include "sql.h"
+#include "util.h"
 #include "iostream"
 
 using namespace std;
@@ -25,8 +25,11 @@ int main(int n, char **args) {
 		usage();
 		return 0;
 	}
-	char *sql = args[1];
-	cout << sql << endl;
+	char *sqlstr = args[1];
+	cout << sqlstr << endl;
+
+	string query = string("select id from example.csv where id > 10 and id < 100");
+	split(query, string(" "));
 
 	return 0;
 }

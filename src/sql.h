@@ -38,8 +38,8 @@ typedef struct condition_s {
 
 	string operator1, operator2, operation;
 
-	condition_s(string operator1, string operator2, string operation);
-	~condition_s();
+	//condition_s(string operator1, string operator2, string operation);
+	//~condition_s();
 
 } condition, *conditionptr;
 
@@ -56,6 +56,6 @@ typedef struct sql_s {
 
 } sql, *sqlptr;
 
-void sql_init(string query, struct sql &result);
+void sql_init(const string &query, sql &result);
 
 #endif

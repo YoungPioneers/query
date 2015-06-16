@@ -6,9 +6,17 @@
 *  Desc:
 */
 
+#include <iostream>
+#include <string>
+#include <vector>
+
 #include "sql.h"
+#include "util.h"
+
+using namespace std;
 
 // example select id from example.csv where id > 10 and id < 100;
-void sql_init(string query, struct sql &result) {
-
+void sql_init(const string &query, sql &result) {
+	vector<string> items = string_split(query, string(" "));
+	cout << query << endl;
 }
