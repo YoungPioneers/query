@@ -38,6 +38,9 @@ typedef struct condition_s {
 
 	string operator1, operator2, operation;
 
+	condition_s(string operator1, string operator2, string operation);
+	~condition_s();
+
 } condition, *conditionptr;
 
 typedef struct sql_s {
@@ -52,5 +55,7 @@ typedef struct sql_s {
 	vector<condition> where;
 
 } sql, *sqlptr;
+
+void sql_init(string query, struct sql &result);
 
 #endif
