@@ -18,5 +18,8 @@ using namespace std;
 // example select id from example.csv where id > 10 and id < 100;
 void sql_init(const string &query, sql &result) {
 	vector<string> items = string_split(query, string(" "));
+	vector<string>::const_iterator it = items.cbegin();
+	
+	// find the position of 'select'
 	cout << query << endl;
 }
