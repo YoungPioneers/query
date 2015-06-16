@@ -1,2 +1,2 @@
 all:
-	g++ q++.cpp helloworld.cpp -o q++
+	g++ q++.cpp -o q++ -std=c++11

@@ -7,7 +7,7 @@
 */
 
 
-#include "helloworld.h"
+#include "sql.h"
 #include "iostream"
 
 using namespace std;
@@ -28,7 +28,5 @@ int main(int n, char **args) {
 	char *sql = args[1];
 	cout << sql << endl;
 
-	// just 4 test
-	hello_world();
 	return 0;
 }
