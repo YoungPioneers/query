@@ -6,6 +6,8 @@
 *  Desc:     main function of this project
 */
 
+#include <vector>
+#include <string>
 
 #include "util.h"
 #include "iostream"
@@ -29,7 +31,17 @@ int main(int n, char **args) {
 	cout << sqlstr << endl;
 
 	string query = string("select id from example.csv where id > 10 and id < 100");
-	split(query, string(" "));
+	split(query, " ");
+
+	vector<string> items = split(query, " ");
+
+	cout << upper(query) << endl;
+	cout << lower(query) << endl;
+	cout << reverse(query) << endl;
+	cout << ltrim(query, "s") << endl;
+	cout << rtrim(query, "0") << endl;
+
+	cout << join(items, ",") << endl;
 
 	return 0;
 }

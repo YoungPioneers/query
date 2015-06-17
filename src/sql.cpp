@@ -15,11 +15,18 @@
 
 using namespace std;
 
+// 仅支持简单select
 // example select id from example.csv where id > 10 and id < 100;
 void sql_init(const string &query, sql &result) {
 	vector<string> items = string_split(query, string(" "));
 	vector<string>::const_iterator it = items.cbegin();
-	
+
+	// walk through items
+	while(items.cend() != it) {
+
+		++it;
+	}
+
 	// find the position of 'select'
 	cout << query << endl;
 }

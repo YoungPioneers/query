@@ -30,6 +30,12 @@
 
 using namespace std;
 
+const string SELECT_STR = string("SELECT");
+const string FROM_STR = string("FROM");
+const string WHERE_STR = string("WHERE");
+const string AND_STR = string("AND");
+const string OR_STR = string("OR");
+
 // single where condition struct
 typedef struct condition_s {
 	// true for and, false for or
