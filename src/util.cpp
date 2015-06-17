@@ -65,5 +65,16 @@ string join(vector<string> &strs, const string &seperator) {
 		t += seperator + *it;
 	}
 	return t;
+}
 
+string replace_all(const string &src, const string &old_str, const string &new_str) {
+	string t("");
+	size_t last = 0, pos;
+	while(string::npos != (pos = src.find(old_str, last))) {
+		t.append(src, last, pos - last);
+		t += new_str;
+		last = pos + old_str.size();
+	}
+	t += src.substr(last);
+	return t;
 }

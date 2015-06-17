@@ -33,6 +33,8 @@ using namespace std;
 const string SELECT_STR = string("SELECT");
 const string FROM_STR = string("FROM");
 const string WHERE_STR = string("WHERE");
+const string GROUP_STR = string("GROUP");
+const string ORDER_STR = string("ORDER");
 const string AND_STR = string("AND");
 const string OR_STR = string("OR");
 
@@ -57,11 +59,19 @@ typedef struct sql_s {
 	bool from_file:true;
 	string from_string;
 
-	// where clasuse
+	// where clause
 	vector<condition> where;
+
+	// group by clause
+	vector<string> group_by;
+
+	// order by clause
+	vector<string> order_by;
 
 } sql, *sqlptr;
 
-void sql_init(const string &query, sql &result);
+bool sql_init(const string &query, sql &result);
+bool find_keyword_pos(vector<string> items, size_t &select_pos, size_t &from_pos, size_t &where_pos, size_t &group_pos, size_t &order_pos);
+bool syntax_check(const size_t &size, const size_t &select_pos, const size_t &from_pos, const size_t &where_pos, const size_t &group_pos, const size_t &order_pos);
 
 #endif

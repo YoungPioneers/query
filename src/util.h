@@ -32,4 +32,7 @@ string trim(const string &str, const string &s);
 // 字符串数组->字符串
 string join(vector<string> &strs, const string &seperator);
 
+// 字符串替换
+string replace_all(const string &src, const string &old_str, const string &new_str);
+
 #endif
