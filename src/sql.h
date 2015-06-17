@@ -46,9 +46,6 @@ typedef struct condition_s {
 
 	string operator1, operator2, operation;
 
-	//condition_s(string operator1, string operator2, string operation);
-	//~condition_s();
-
 } condition, *conditionptr;
 
 typedef struct sql_s {
@@ -71,7 +68,14 @@ typedef struct sql_s {
 } sql, *sqlptr;
 
 bool sql_init(const string &query, sql &result);
+
+// 查找select, from, where, group, order等关键字位置
 bool find_keyword_pos(vector<string> items, size_t &select_pos, size_t &from_pos, size_t &where_pos, size_t &group_pos, size_t &order_pos);
+
+// 通过关键字位置判断语法正确性
 bool syntax_check(const size_t &size, const size_t &select_pos, const size_t &from_pos, const size_t &where_pos, const size_t &group_pos, const size_t &order_pos);
+
+// 处理 select 的 fields
+map<string, int> get_fields(vector<string> fields);
 
 #endif

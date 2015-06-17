@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 #include "sql.h"
 #include "util.h"
@@ -24,7 +25,6 @@ bool sql_init(const string &query, sql &result) {
 
 	size_t size = items.size(), pos = 0;
 	size_t select_pos(size), from_pos(size), where_pos(size), group_pos(size), order_pos(size);
-	//size_t select_pos, from_pos, where_pos, group_pos, order_pos;
 
 	if(!find_keyword_pos(items, select_pos, from_pos, where_pos, group_pos, order_pos)) {
 		return false;
@@ -33,6 +33,9 @@ bool sql_init(const string &query, sql &result) {
 	vector<string> fields(items.begin() + select_pos + 1, items.begin() + from_pos);
 	vector<string> table(items.begin() + from_pos + 1, items.begin() + where_pos);
 	vector<string> conditions(items.begin() + where_pos + 1, items.begin() + group_pos);
+
+	// 处理fields
+	fields = split(join(fields, ""), ",");
 
 	return true;
 }
@@ -67,4 +70,18 @@ bool find_keyword_pos(vector<string> items, size_t &select_pos, size_t &from_pos
 
 bool syntax_check(const size_t &size, const size_t &select_pos, const size_t &from_pos, const size_t &where_pos, const size_t &group_pos, const size_t &order_pos) {
 	return select_pos < size && from_pos < size && select_pos < from_pos;
+}
+
+map<string, int> get_fields(vector<string> fields) {
+	vector<string>::iterator it = fields.begin();
+	while(fields.end() != it) {
+		// 提取最外层括号
+		// count (distince(id)) / name
+		string field_raw = *it;
+		//size_t left = field_raw.find("(", field_raw.begin());
+		//size_t right = field_raw.find(")", field_raw.rbegin());
+		
+		++it;
+	}
+	return map<string, int>();
 }
