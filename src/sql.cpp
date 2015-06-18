@@ -11,6 +11,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
+#include <exception>
 
 #include "sql.h"
 #include "util.h"
@@ -20,62 +21,71 @@ using namespace std;
 // only know simple select grammar
 // example select id from example.csv where id > 10 and id < 100;
 bool sql_init(const string &query, sql &result) {
-	vector<string> items = split(query, string(" "));
+	try {
+		vector<string> items = split(query, string(" "));
+		size_t size = items.size();
+		size_t select_pos(size), from_pos(size), where_pos(size), group_pos(size), order_pos(size);
 
+		// find positions of keywords
+		find_keyword_pos(items, select_pos, from_pos, where_pos, group_pos, order_pos);
 
-	size_t size = items.size(), pos = 0;
-	size_t select_pos(size), from_pos(size), where_pos(size), group_pos(size), order_pos(size);
-
-	if(!find_keyword_pos(items, select_pos, from_pos, where_pos, group_pos, order_pos)) {
-		return false;
-	}
-
-	// slice different type of elements from items
-	vector<string> fields(items.begin() + select_pos + 1, items.begin() + from_pos);
-	vector<string> table(items.begin() + from_pos + 1, items.begin() + where_pos);
-	vector<string> conditions(items.begin() + where_pos + 1, items.begin() + group_pos);
-
-	// deal with fields
-	fields = split(join(fields, ""), COMMA_STR);
-	result.select = get_fields(fields);
-
-	// decide whether table name is a file
-	if(1 != table.size()) {
-		return false;
-	}
-	string table_name = table.at(0);
-	result.from = table_name;
-	result.from_type = FROM_STDIN_STR == table_name;
-
-	// deal with conditions
-	vector<condition> where = get_where(conditions);
-
-	// deal with groups
-	result.group_by = vector<string>();
-	if(group_pos < size) {
-		vector<string> groups(items.begin() + group_pos + 1, items.begin() + order_pos);
-		if(BY_STR != upper(groups.at(0))) {
+		// syntax check
+		if(!syntax_check(size, select_pos, from_pos, where_pos, group_pos, order_pos)) {
 			return false;
 		}
-		result.group_by = get_group(groups);
 
-	}
+		// slice different type of elements from items
+		vector<string> fields(items.begin() + select_pos + 1, items.begin() + from_pos);
+		vector<string> table(items.begin() + from_pos + 1, items.begin() + where_pos);
+		vector<string> conditions(items.begin() + where_pos + 1, items.begin() + group_pos);
 
-	// deal with orders
-	result.order_by = map<string, bool>();
-	if(order_pos < size) {
-		vector<string> orders(items.begin() + order_pos + 1, items.begin() + size);
-		if(BY_STR != upper(orders.at(0))) {
+		// deal with fields
+		fields = split(join(fields, ""), COMMA_STR);
+		result.select = get_fields(fields);
+
+		// decide whether table name is a file
+		if(1 != table.size()) {
 			return false;
 		}
-		result.order_by = get_order(orders);
+		string table_name = table.at(0);
+		result.from = table_name;
+		result.from_type = FROM_STDIN_STR == table_name;
+
+		// deal with conditions
+		vector<condition> where = get_where(conditions);
+
+		// deal with groups
+		result.group_by = vector<string>();
+		if(group_pos < size) {
+			vector<string> groups(items.begin() + group_pos + 1, items.begin() + order_pos);
+			if(BY_STR != upper(groups.at(0))) {
+				return false;
+			}
+			result.group_by = get_group(groups);
+
+		}
+
+		// deal with orders
+		result.order_by = map<string, bool>();
+		if(order_pos < size) {
+			vector<string> orders(items.begin() + order_pos + 1, items.begin() + size);
+			if(BY_STR != upper(orders.at(0))) {
+				return false;
+			}
+			result.order_by = get_order(orders);
+
+		}
+
+		return true;
 
 	}
-
-	return true;
+	catch(exception &e) {
+		cout << e.what() << endl;
+		return false;
+	}
 }
 
-bool find_keyword_pos(vector<string> items, size_t &select_pos, size_t &from_pos, size_t &where_pos, size_t &group_pos, size_t &order_pos) {
+void find_keyword_pos(vector<string> items, size_t &select_pos, size_t &from_pos, size_t &where_pos, size_t &group_pos, size_t &order_pos) {
 	size_t size = items.size(), pos = 0;
 
 	// walk through items
@@ -100,7 +110,6 @@ bool find_keyword_pos(vector<string> items, size_t &select_pos, size_t &from_pos
 		}
 		++pos;
 	}
-	return syntax_check(size, select_pos, from_pos, where_pos, group_pos, order_pos);
 }
 
 bool syntax_check(const size_t &size, const size_t &select_pos, const size_t &from_pos, const size_t &where_pos, const size_t &group_pos, const size_t &order_pos) {
@@ -112,6 +121,7 @@ bool syntax_check(const size_t &size, const size_t &select_pos, const size_t &fr
 	if(order_pos < size) {
 		result  = result && where_pos < order_pos;
 	}
+
 	if(group_pos < size && order_pos < size) {
 		result = result && group_pos < order_pos;
 	}
@@ -295,72 +305,3 @@ map<string, bool> get_order(vector<string> orders) {
 
 	return order_by;
 }
-
-
-
-
-// more complicated grou
-//map<string, unsigned int> get_group(vector<string> groups) {
-	//// 去除首位的BY
-	//map<string, unsigned int> group_by = map<string, unsigned int>();
-	//vector<string> new_groups(groups.begin() + 1, groups.end());
-
-	//new_groups = split(join(new_groups, ""), COMMA_STR);
-	//vector<string>::iterator it = new_groups.begin();
-	//while(new_groups.end() != it) {
-		//// 提取最外层括号
-		//// count (distince(id)) / name
-		//string field_raw = *it;
-
-		//// 解析嵌套的函数调用
-		//size_t left, right;
-		//unsigned int function_type = SELECT_PLAIN;
-		//string function_name(""), field_name("");
-		//while(true) {
-			//left = field_raw.find(LEFT_BRACKET, 0);
-			//right = field_raw.rfind(RIGHT_BRACKET, field_raw.size());
-
-			//if(string::npos == left || string::npos == right) {
-				//// 函数最里层
-				//field_name = field_raw;
-				//group_by[field_name] = function_type;
-				//cout << field_name << " " << function_type << endl;
-				//break;
-			//}
-			//function_name = upper(field_raw.substr(0, left));
-			//field_name = field_raw.substr(left + 1, field_raw.size() - left - 2);
-
-			//if(SUM_STR == function_name) {
-				//function_type |= SELECT_SUM;
-
-			//}
-			//else if(MAX_STR == function_name) {
-				//function_type |= SELECT_MAX;
-
-			//}
-			//else if(MIN_STR == function_name) {
-				//function_type |= SELECT_MIN;
-
-			//}
-			//else if(AVG_STR == function_name) {
-				//function_type |= SELECT_AVG;
-
-			//}
-			//else if(COUNT_STR == function_name) {
-				//function_type |= SELECT_COUNT;
-
-			//}
-			//else if(DISTINCT_STR == function_name) {
-				//function_type |= SELECT_DISTINCT;
-
-			//}
-
-			//field_raw = field_name;
-
-		//}
-
-		//++it;
-	//}
-
-	//return group_by;
-//}

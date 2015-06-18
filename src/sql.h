@@ -90,7 +90,6 @@ typedef struct sql_s {
 
 	// group by clause
 	vector<string> group_by;
-	//map<string, unsigned int> group_by;
 
 	// order by clause
 	map<string, bool> order_by;
@@ -101,7 +100,7 @@ typedef struct sql_s {
 bool sql_init(const string &query, sql &result);
 
 // 查找select, from, where, group, order等关键字位置
-bool find_keyword_pos(vector<string> items, size_t &select_pos, size_t &from_pos, size_t &where_pos, size_t &group_pos, size_t &order_pos);
+void find_keyword_pos(vector<string> items, size_t &select_pos, size_t &from_pos, size_t &where_pos, size_t &group_pos, size_t &order_pos);
 
 // 通过关键字位置判断语法正确性
 bool syntax_check(const size_t &size, const size_t &select_pos, const size_t &from_pos, const size_t &where_pos, const size_t &group_pos, const size_t &order_pos);
@@ -117,7 +116,6 @@ bool is_operation(const string &str);
 
 // 处理group by语句
 vector<string> get_group(vector<string> groups);
-//map<string, unsigned int> get_group(vector<string> groups);
 
 // 处理order by 语句
 map<string, bool> get_order(vector<string> orders);
