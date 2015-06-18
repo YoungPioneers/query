@@ -14,55 +14,55 @@
 #include <map>
 
 // TODO 方差: var, varp, 标准差: stdev, stdevp
-#define SELECT_PLAIN 		0x00 	// select column directly
-#define SELECT_SUM 		0x01	// workout sum of the column
-#define SELECT_MAX 		0x02
-#define SELECT_MIN 		0x04
-#define SELECT_AVG 		0x08
-#define SELECT_COUNT 		0x10
-#define SELECT_DISTINCT 	0x20
+const unsigned int SELECT_PLAIN 	= 0x00
+const unsigned int SELECT_SUM 		= 0x01
+const unsigned int SELECT_MAX 		= 0x02
+const unsigned int SELECT_MIN 		= 0x04
+const unsigned int SELECT_AVG 		= 0x08
+const unsigned int SELECT_COUNT 	= 0x10
+const unsigned int SELECT_DISTINCT 	= 0x20
 
 // 组合查询类型
 #define SELECT_COUNT_DISTINCT (SELECT_COUNT & SELECT_DISTINCT)
 
-#define SELECT_STR 		"SELECT"
-#define FROM_STR 		"FROM"
-#define WHERE_STR 		"WHERE"
-#define GROUP_STR 		"GROUP"
-#define ORDER_STR 		"ORDER"
-#define AND_STR 		"AND"
-#define OR_STR 			"OR"
-#define SUM_STR 		"SUM"
-#define MAX_STR 		"MAX"
-#define MIN_STR 		"MIN"
-#define AVG_STR 		"AVG"
-#define COUNT_STR 		"COUNT"
-#define DISTINCT_STR 		"DISTINCT"
-#define BY_STR 			"BY"
-#define ASC_STR 		"ASC"
-#define DESC_STR 		"DESC"
+const string SELECT_STR 		= "SELECT"
+const string FROM_STR 			= "FROM"
+const string WHERE_STR 			= "WHERE"
+const string GROUP_STR 			= "GROUP"
+const string ORDER_STR 			= "ORDER"
+const string AND_STR 			= "AND"
+const string OR_STR 			= "OR"
+const string SUM_STR 			= "SUM"
+const string MAX_STR 			= "MAX"
+const string MIN_STR 			= "MIN"
+const string AVG_STR 			= "AVG"
+const string COUNT_STR 			= "COUNT"
+const string DISTINCT_STR 		= "DISTINCT"
+const string BY_STR 			= "BY"
+const string ASC_STR 			= "ASC"
+const string DESC_STR 			= "DESC"
 
-#define FROM_FILE 		false
-#define FROM_STDIN 		true
-#define FROM_STDIN_STR		"-"
+const bool FROM_FILE 			= false
+const bool FROM_STDIN 			= true
+const string FROM_STDIN_STR		= "-"
 
-#define LOGIC_AND		true
-#define LOGIC_OR		false
+const bool LOGIC_AND 			= true
+const bool LOGIC_OR 			= false
 
-#define EQUAL_STR		"="
-#define NOT_EQUAL_STR		"<>"
-#define GT_STR			">"
-#define GTE_STR			">="
-#define LT_STR			"<"
-#define LTE_STR			"<="
-#define LEFT_BRACKET 		"("
-#define RIGHT_BRACKET 		")"
-#define LEFT_BRACKET_CHAR 	'('
-#define RIGHT_BRACKET_CHAR 	')'
-#define COMMA_STR		","
+const string EQUAL_STR 			= "="
+const string NOT_EQUAL_STR 		= "<>"
+const string GT_STR 			= ">"
+const string GTE_STR 			= ">="
+const string LT_STR 			= "<"
+const string LTE_STR 			= "<="
+const string LEFT_BRACKET  		= "("
+const string RIGHT_BRACKET  		= ")"
+const string LEFT_BRACKET_CHAR 		= '('
+const string RIGHT_BRACKET_CHAR 	= ')'
+const string COMMA_STR 			= ","
 
-#define ORDER_ASC		true
-#define ORDER_DESC 		false
+const bool ORDER_ASC 			= true
+const bool ORDER_DESC  			= false
 
 using namespace std;
 
