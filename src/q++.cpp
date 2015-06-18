@@ -21,14 +21,34 @@ void usage(void) {
 }
 
 
-int main(int n, char **args) {
+int main(int argc, char **argv) {
 	// query example
 	// q++ 'select count(*) from xxx.csv where id > 10'
-	if(2 != n) {
+	if(argc < 2) {
 		usage();
-		return 0;
+		return 1;
 	}
-	char *sqlstr = args[1];
+
+	bool with_header = false;
+	string delimeter;
+	for(int i = 0; i < argc; ++i) {
+		if("--with-header" == string(argv[i])) {
+			with_header = true;
+		}
+		else if("--delimeter" == string(argv[i]) || "-d" == string(argv[i])) {
+			if(i + 1 < argc) {
+				delimeter = argv[i++];
+
+			}
+			else {
+				cerr << argv[i] << " option requires one argument." << endl;
+				return 1;
+			}
+
+		}
+
+	}
+	char *sqlstr = argv[1];
 	cout << sqlstr << endl;
 
 	//string query = string("select count(distinct(id)), name from example.csv where id > 10 and id < 100 or (name = 'eddie' or name = 'yuhui') group by id, name order by id, name asc");

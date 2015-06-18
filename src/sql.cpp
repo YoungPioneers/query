@@ -53,6 +53,7 @@ bool sql_init(const string &query, sql &result) {
 
 		// deal with conditions
 		vector<condition> where = get_where(conditions);
+		sort(where.begin(), where.end(), [](condition c1, condition c2){ return c1.level < c2.level; });
 
 		// deal with groups
 		result.group_by = vector<string>();
