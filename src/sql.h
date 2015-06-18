@@ -15,15 +15,15 @@
 
 // TODO 方差: var, varp, 标准差: stdev, stdevp
 #define SELECT_PLAIN 0x00	// select column directly
-#define SELCT_SUM 0x01		// workout sum of the column
-#define SELCT_MAX 0x02
-#define SELCT_MIN 0x04
-#define SELCT_AVG 0x08
-#define SELCT_COUNT 0x10
-#define SELCT_DISTINCT 0x20
+#define SELECT_SUM 0x01		// workout sum of the column
+#define SELECT_MAX 0x02
+#define SELECT_MIN 0x04
+#define SELECT_AVG 0x08
+#define SELECT_COUNT 0x10
+#define SELECT_DISTINCT 0x20
 
 // 组合查询类型
-#define SELECT_COUNT_DISTINCT (SELCT_COUNT & SELCT_DISTINCT)
+#define SELECT_COUNT_DISTINCT (SELECT_COUNT & SELECT_DISTINCT)
 
 #define FROM_FILE 0x01
 #define FROM_STDIN 0x02
@@ -38,6 +38,13 @@ const string ORDER_STR = string("ORDER");
 const string AND_STR = string("AND");
 const string OR_STR = string("OR");
 
+const string SUM_STR = string("SUM");
+const string MAX_STR = string("MAX");
+const string MIN_STR = string("MIN");
+const string AVG_STR = string("AVG");
+const string COUNT_STR = string("COUNT");
+const string DISTINCT_STR = string("DISTINCT");
+
 // single where condition struct
 typedef struct condition_s {
 	// true for and, false for or
@@ -50,7 +57,7 @@ typedef struct condition_s {
 
 typedef struct sql_s {
 	// select clause
-	map<string, int> select;
+	map<string, unsigned int> select;
 
 	// from clause
 	bool from_file:true;
@@ -76,6 +83,6 @@ bool find_keyword_pos(vector<string> items, size_t &select_pos, size_t &from_pos
 bool syntax_check(const size_t &size, const size_t &select_pos, const size_t &from_pos, const size_t &where_pos, const size_t &group_pos, const size_t &order_pos);
 
 // 处理 select 的 fields
-map<string, int> get_fields(vector<string> fields);
+map<string, unsigned int> get_fields(vector<string> fields);
 
 #endif

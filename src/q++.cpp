@@ -31,7 +31,7 @@ int main(int n, char **args) {
 	char *sqlstr = args[1];
 	cout << sqlstr << endl;
 
-	string query = string("select id from example.csv where id > 10 and id < 100");
+	string query = string("select count(distinct(id)), name from example.csv where id > 10 and id < 100");
 	cout << replace_all(query, "select", "test") << endl;
 	sql result = sql();
 	sql_init(query, result);

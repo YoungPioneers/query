@@ -36,6 +36,7 @@ bool sql_init(const string &query, sql &result) {
 
 	// 处理fields
 	fields = split(join(fields, ""), ",");
+	result.select = get_fields(fields);
 
 	return true;
 }
@@ -72,16 +73,72 @@ bool syntax_check(const size_t &size, const size_t &select_pos, const size_t &fr
 	return select_pos < size && from_pos < size && select_pos < from_pos;
 }
 
-map<string, int> get_fields(vector<string> fields) {
+map<string, unsigned int> get_fields(vector<string> fields) {
+	map<string, unsigned int> select = map<string, unsigned int>();
+
 	vector<string>::iterator it = fields.begin();
 	while(fields.end() != it) {
 		// 提取最外层括号
 		// count (distince(id)) / name
 		string field_raw = *it;
-		//size_t left = field_raw.find("(", field_raw.begin());
-		//size_t right = field_raw.find(")", field_raw.rbegin());
-		
+
+		// 解析嵌套的函数调用
+		size_t left, right;
+		unsigned int function_type = SELECT_PLAIN;
+		string function_name(""), field_name("");
+		while(true) {
+			left = field_raw.find("(", 0);
+			right = field_raw.rfind(")", field_raw.size());
+			//cout << field_raw << " " << left << " " << right << endl;
+
+			if(string::npos == left || string::npos == right) {
+				// 函数最里层
+				field_name = field_raw;
+				//cout << "field_name: " << field_name << endl;
+				//cout << "function_type: " << function_type << endl;
+
+				select[field_name] = function_type;
+				break;
+			}
+			function_name = upper(field_raw.substr(0, left));
+			field_name = field_raw.substr(left + 1, field_raw.size() - left - 2);
+
+			if(SUM_STR == function_name) {
+				function_type |= SELECT_SUM;
+
+			}
+			else if(MAX_STR == function_name) {
+				function_type |= SELECT_MAX;
+
+			}
+			else if(MIN_STR == function_name) {
+				function_type |= SELECT_MIN;
+
+			}
+			else if(AVG_STR == function_name) {
+				function_type |= SELECT_AVG;
+
+			}
+			else if(COUNT_STR == function_name) {
+				function_type |= SELECT_COUNT;
+
+			}
+			else if(DISTINCT_STR == function_name) {
+				function_type |= SELECT_DISTINCT;
+
+			}
+
+			//cout << "function_name: " << function_name << endl;
+			//cout << "field_name: " << field_name << endl;
+			//cout << "function_type: " << function_type << endl;
+
+			field_raw = field_name;
+
+
+		}
+
+
 		++it;
 	}
-	return map<string, int>();
+	return select;
 }
