@@ -71,7 +71,6 @@ using namespace std;
 // single where condition struct
 typedef struct condition_s {
 	// true for and, false for or
-	// xxxx || (logic && condiction result)
 	bool logic = LOGIC_AND;
 	unsigned int level = 0;
 
