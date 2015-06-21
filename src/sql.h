@@ -43,6 +43,8 @@ const string DISTINCT_STR 		= "DISTINCT";
 const string BY_STR 			= "BY";
 const string ASC_STR 			= "ASC";
 const string DESC_STR 			= "DESC";
+const string BLANK_STR			= "";
+const string SPACE_STR			= " ";
 
 const bool FROM_FILE 			= false;
 const bool FROM_STDIN 			= true;

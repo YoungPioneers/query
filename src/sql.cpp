@@ -22,7 +22,7 @@ using namespace std;
 // example select id from example.csv where id > 10 and id < 100;
 bool sql_init(const string &query, sql &result) {
 	try {
-		vector<string> items = split(query, string(" "));
+		vector<string> items = split(query, SPACE_STR);
 		size_t size = items.size();
 		size_t select_pos(size), from_pos(size), where_pos(size), group_pos(size), order_pos(size);
 
@@ -40,7 +40,7 @@ bool sql_init(const string &query, sql &result) {
 		vector<string> conditions(items.begin() + where_pos + 1, items.begin() + group_pos);
 
 		// deal with fields
-		fields = split(join(fields, ""), COMMA_STR);
+		fields = split(join(fields, BLANK_STR), COMMA_STR);
 		result.select = get_fields(fields);
 
 		// decide whether table name is a file
@@ -142,7 +142,7 @@ map<string, unsigned int> get_fields(vector<string> fields) {
 		// 解析嵌套的函数调用
 		size_t left, right;
 		unsigned int function_type = SELECT_PLAIN;
-		string function_name(""), field_name("");
+		string function_name(BLANK_STR), field_name(BLANK_STR);
 		while(true) {
 			left = field_raw.find(LEFT_BRACKET, 0);
 			right = field_raw.rfind(RIGHT_BRACKET, field_raw.size());
@@ -197,11 +197,10 @@ vector<condition> get_where(vector<string> conditions) {
 
 	bool logic = LOGIC_AND, is_op1 = true;
 	unsigned int level = 0;
-	string operator1(""), operator2(""), operation("");
+	string operator1(BLANK_STR), operator2(BLANK_STR), operation(BLANK_STR);
 	// 解析嵌套的条件语句
 	while(conditions.end() != it) {
 		string item = *it;
-
 
 		if(LEFT_BRACKET == item) {
 			++level;
@@ -275,7 +274,7 @@ vector<string> get_group(vector<string> groups) {
 	map<string, unsigned int> group_by = map<string, unsigned int>();
 	vector<string> new_groups(groups.begin() + 1, groups.end());
 
-	return split(join(new_groups, ""), COMMA_STR);
+	return split(join(new_groups, BLANK_STR), COMMA_STR);
 
 }
 
@@ -283,16 +282,16 @@ map<string, bool> get_order(vector<string> orders) {
 	map<string, bool> order_by = map<string, bool>();
 	vector<string> new_orders(orders.begin() + 1, orders.end());
 
-	new_orders = split(join(new_orders, " "), COMMA_STR);
+	new_orders = split(join(new_orders, SPACE_STR), COMMA_STR);
 
 
 	vector<string>::iterator it = new_orders.begin();
 
 	bool order = true, is_field = true;
 	while(new_orders.end() != it) {
-		string item_raw = trim(*it, " ");
+		string item_raw = trim(*it, SPACE_STR);
 
-		vector<string> items = split(item_raw, " ");
+		vector<string> items = split(item_raw, SPACE_STR);
 		if(1 == items.size()) {
 			order_by[items.at(0)] = ORDER_ASC;
 

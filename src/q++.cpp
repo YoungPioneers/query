@@ -16,12 +16,21 @@
 using namespace std;
 
 void usage(void) {
-	cerr << "Usage:" << endl;
-	cerr << "	q++ 'select count(*) from example.csv where id > 100'" << endl;
+	cerr << "Usage: q++ [options] query_string" << endl;
+	cerr << "	--delimeter	String used to seperate fields; Default set to a space; -d for short." << endl;
+	cerr << "	--help		To display this page. -h for short." << endl;
+	cerr << "	--with-header	Must add this option if the first row of input file is a line of field names." << endl;
+	cerr << endl;
+	cerr << "Example:" << endl;
+	cerr << "	q++ 'select sum(fee) from example.csv where id > 100'" << endl;
+	cerr << "	cat example.csv | q++ 'select sum(fee) from - where id > 100'" << endl;
 }
 
 
 int main(int argc, char **argv) {
+	bool with_header = false;
+	string delimeter(" "), query("");
+
 	// query example
 	// q++ 'select count(*) from xxx.csv where id > 10'
 	if(argc < 2) {
@@ -29,13 +38,18 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	bool with_header = false;
-	string delimeter;
 	for(int i = 0; i < argc; ++i) {
-		if("--with-header" == string(argv[i])) {
+		string argstr = string(argv[i]);
+		if("--help" == argstr || "-h" == argstr) {
+			usage();
+			return 1;
+		}
+
+		else if("--with-header" == argstr) {
 			with_header = true;
 		}
-		else if("--delimeter" == string(argv[i]) || "-d" == string(argv[i])) {
+
+		else if("--delimeter" == argstr || "-d" == argstr) {
 			if(i + 1 < argc) {
 				delimeter = argv[i++];
 
@@ -47,13 +61,20 @@ int main(int argc, char **argv) {
 
 		}
 
-	}
-	char *sqlstr = argv[1];
-	cout << sqlstr << endl;
+		else {
+			query = argstr;
+			
+		}
 
+	}
+
+	if(string("") == query) {
+		usage();
+		return 1;
+	}
 	//string query = string("select count(distinct(id)), name from example.csv where id > 10 and id < 100 or (name = 'eddie' or name = 'yuhui') group by id, name order by id, name asc");
 	//string query = string("select count(distinct(id)), name from example.csv where id > 10 and id < 100 or (name = 'eddie' or name = 'yuhui') group by id, name");
-	string query = string("select count(distinct(id)), name from example.csv where id > 10 and id < 100 or (name = 'eddie' or name = 'yuhui') order by id, name asc");
+	query = string("select count(distinct(id)), name from example.csv where id > 10 and id < 100 or (name = 'eddie' or name = 'yuhui') order by id, name asc");
 	cout << query << endl;
 	sql result = sql();
 	sql_init(query, result);
