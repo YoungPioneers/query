@@ -11,7 +11,6 @@
 
 #include <string>
 #include <vector>
-#include <map>
 
 using namespace std;
 
@@ -43,6 +42,7 @@ const string DISTINCT_STR 		= "DISTINCT";
 const string BY_STR 			= "BY";
 const string ASC_STR 			= "ASC";
 const string DESC_STR 			= "DESC";
+const string STAR_STR 			= "*";
 const string BLANK_STR			= "";
 const string SPACE_STR			= " ";
 
@@ -70,6 +70,12 @@ const bool ORDER_DESC  			= false;
 
 using namespace std;
 
+typedef struct field_s {
+	string name;
+	unsigned int type;
+
+} field, *fieldptr;
+
 // single where condition struct
 typedef struct condition_s {
 	// true for and, false for or
@@ -80,9 +86,16 @@ typedef struct condition_s {
 
 } condition, *conditionptr;
 
+typedef struct order_s {
+	string name;
+	bool type;
+
+} order, *orderptr;
+
 typedef struct sql_s {
 	// select clause
-	map<string, unsigned int> select;
+	// map<string, unsigned int> select;
+	vector<field> select;
 
 	// from clause
 	bool from_type = FROM_FILE;
@@ -95,7 +108,7 @@ typedef struct sql_s {
 	vector<string> group_by;
 
 	// order by clause
-	map<string, bool> order_by;
+	vector<order> order_by;
 
 } sql, *sqlptr;
 
@@ -109,7 +122,7 @@ void find_keyword_pos(vector<string> items, size_t &select_pos, size_t &from_pos
 bool syntax_check(const size_t &size, const size_t &select_pos, const size_t &from_pos, const size_t &where_pos, const size_t &group_pos, const size_t &order_pos);
 
 // 处理 select 的 fields
-map<string, unsigned int> get_fields(vector<string> fields);
+vector<field> get_fields(vector<string> fields);
 
 // 处理 where 条件字段
 vector<condition> get_where(vector<string> conditions);
@@ -121,5 +134,5 @@ bool is_operation(const string &str);
 vector<string> get_group(vector<string> groups);
 
 // 处理order by 语句
-map<string, bool> get_order(vector<string> orders);
+vector<order> get_order(vector<string> orders);
 #endif

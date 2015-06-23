@@ -67,7 +67,7 @@ bool sql_init(const string &query, sql &result) {
 		}
 
 		// deal with orders
-		result.order_by = map<string, bool>();
+		result.order_by = vector<order>();
 		if(order_pos < size) {
 			vector<string> orders(items.begin() + order_pos + 1, items.begin() + size);
 			if(BY_STR != upper(orders.at(0))) {
@@ -130,8 +130,8 @@ bool syntax_check(const size_t &size, const size_t &select_pos, const size_t &fr
 	return result;
 }
 
-map<string, unsigned int> get_fields(vector<string> fields) {
-	map<string, unsigned int> select = map<string, unsigned int>();
+vector<field> get_fields(vector<string> fields) {
+	vector<field> select = vector<field>();
 
 	vector<string>::iterator it = fields.begin();
 	while(fields.end() != it) {
@@ -150,7 +150,11 @@ map<string, unsigned int> get_fields(vector<string> fields) {
 			if(string::npos == left || string::npos == right) {
 				// 函数最里层
 				field_name = field_raw;
-				select[field_name] = function_type;
+
+				field f = field();
+				f.name = field_name;
+				f.type = function_type;
+				select.push_back(f);
 				break;
 			}
 			function_name = upper(field_raw.substr(0, left));
@@ -187,6 +191,7 @@ map<string, unsigned int> get_fields(vector<string> fields) {
 
 		++it;
 	}
+
 	return select;
 }
 
@@ -278,8 +283,8 @@ vector<string> get_group(vector<string> groups) {
 
 }
 
-map<string, bool> get_order(vector<string> orders) {
-	map<string, bool> order_by = map<string, bool>();
+vector<order> get_order(vector<string> orders) {
+	vector<order> order_by = vector<order>();
 	vector<string> new_orders(orders.begin() + 1, orders.end());
 
 	new_orders = split(join(new_orders, SPACE_STR), COMMA_STR);
@@ -287,17 +292,22 @@ map<string, bool> get_order(vector<string> orders) {
 
 	vector<string>::iterator it = new_orders.begin();
 
-	bool order = true, is_field = true;
 	while(new_orders.end() != it) {
 		string item_raw = trim(*it, SPACE_STR);
 
 		vector<string> items = split(item_raw, SPACE_STR);
+		order o = order();
+
 		if(1 == items.size()) {
-			order_by[items.at(0)] = ORDER_ASC;
+			o.name = items.at(0);
+			o.type = ORDER_ASC;
+			order_by.push_back(o);
 
 		}
 		else if(2 == items.size()) {
-			order_by[items.at(0)] = ASC_STR == items.at(1);
+			o.name = items.at(0);
+			o.type = ASC_STR == items.at(1);
+			order_by.push_back(o);
 		}
 
 		++it;
