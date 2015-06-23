@@ -131,7 +131,10 @@ void select_with_group(const string &line,const string &seperator,map<string,map
                     result[it->name] = map<unsigned int,float>();
                     break;
                 default:
-                    cout << "aggr not found" << endl;
+                    char type[16];
+                    sprintf(type, "%d", it->type);
+                    string type_str = type;
+                    cout << type_str + " aggr not found" << endl;
             }
         }
     }
