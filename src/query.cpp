@@ -1,3 +1,11 @@
+/*
+*  Author:   huangjunwei@youmi.net
+*  	     suyuhui@youmi.net
+*  Time:     Tue 18 Jun 2015 14:43:18 PM CST
+*  File:     query.h
+*  Desc:
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -8,14 +16,13 @@
 
 using namespace std;
 
-map<string,int> header_map = map<string,int>();
-
 void input_stream(istream &is,bool has_header,const string &seperator,const sql &source) {
     string line;
     getline(is,line);
     const string const_header_line = line;
     vector<string> header_vector = split(const_header_line,seperator);
     int index = 1;
+    header_map = map<string,int>();
 
     for(vector<string>::iterator it = header_vector.begin();it != header_vector.end();++it) {
         if(has_header){

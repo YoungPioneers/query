@@ -1,4 +1,3 @@
-
 /*
 *  Author:   huangjunwei@youmi.net
 *  	     suyuhui@youmi.net
@@ -15,6 +14,8 @@
 #include "sql.h"
 
 using namespace std;
+
+map<string,int> header_map;
 
 bool where(const string &line,const string &seperator,const sql &source);
 
