@@ -2,7 +2,7 @@
 *  Author:   huangjunwei@youmi.net
 *  	     suyuhui@youmi.net
 *  Time:     Tue 18 Jun 2015 14:43:18 PM CST
-*  File:     query.h
+*  File:     query.cpp
 *  Desc:
 */
 
