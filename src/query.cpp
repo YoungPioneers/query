@@ -172,15 +172,15 @@ bool where(const string &line,const string &seperator,const sql &source) {
         if(oper == EQUAL_STR) {
             current_step_pass = compare_result != 0 ? false:true;
         }else if(oper == NOT_EQUAL_STR) {
-            current_step_pass = compare_result != 0 ? false:true;
+            current_step_pass = compare_result == 0 ? false:true;
         }else if(oper == GT_STR) {
-            current_step_pass = compare_result != 0 ? false:true;
+            current_step_pass = compare_result <= 0 ? false:true;
         }else if(oper == GTE_STR) {
-            current_step_pass = compare_result != 0 ? false:true;
+            current_step_pass = compare_result < 0 ? false:true;
         }else if(oper == LT_STR) {
-            current_step_pass = compare_result != 0 ? false:true;
+            current_step_pass = compare_result >= 0 ? false:true;
         }else if(oper == LTE_STR) {
-            current_step_pass = compare_result != 0 ? false:true;
+            current_step_pass = compare_result > 0 ? false:true;
         }else {
             last_step_pass = false;
             continue;
