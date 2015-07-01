@@ -15,20 +15,25 @@
 
 using namespace std;
 
-map<string,int> header_map;
 
-bool where(const string &line,const string &seperator,const sql &source);
+void line_iterator(istream &input, const bool &with_header, const string &delimeter);
+
+
+
+//map<string,int> header_map;
+
+//bool where(const string &line,const string &seperator,const sql &source);
 
 /*
  *simple select column
  */
-string select(const string &line,const string &seperator,const sql &source);
+//string select(const string &line,const string &seperator,const sql &source);
 
 /*
  *a aggregate function like count,sum,max,min,avg followed by select
  */
-void select_with_group(const string &line,const string &seperator,map<string,string> &result,const sql &source,unsigned int &number_record);
+//void select_with_group(const string &line,const string &seperator,map<string,string> &result,const sql &source,unsigned int &number_record);
 
-void start(const sql &source,bool has_header,const string &seperator);
-void input_stream(istream &is,bool has_header,const string &seperator,const sql &source);
+//void start(const sql &source,bool has_header,const string &seperator);
+//void input_stream(istream &is,bool has_header,const string &seperator,const sql &source);
 #endif

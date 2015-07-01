@@ -9,9 +9,10 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #include "sql.h"
-#include "util.h"
+#include "query.h"
 
 using namespace std;
 
@@ -79,6 +80,9 @@ int main(int argc, char **argv) {
 	sql result = sql();
 	sql_init(query, result);
 
+        ifstream infile("../example.csv");
+        line_iterator(infile, with_header, delimeter);
+        infile.close();
 
 	return 0;
 }
