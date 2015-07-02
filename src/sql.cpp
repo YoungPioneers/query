@@ -315,3 +315,52 @@ vector<order> get_order(vector<string> orders) {
 
 	return order_by;
 }
+
+void print_sql(const sql &query) {
+	cout << "SQL structure:" << endl;
+	// 输出SELECT
+	cout << "SELECT:" << endl;
+	vector<field>::const_iterator select_it = query.select.begin();
+	while(query.select.end() != select_it) {
+		cout << "\tname: " << select_it->name << endl;
+		cout << "\ttype: " << select_it->type << endl;
+
+		++select_it;
+	}
+
+	// 输出FROM
+	cout << "FROM:" << endl;
+	cout << "\tFROM_TYPE: " << query.from_type << " FROM: " << query.from << endl;
+
+	// 输出WHERE
+	vector<condition>::const_iterator where_it = query.where.begin();
+	while(query.where.end() != where_it) {
+		cout << "\tlogic: " << where_it->logic << endl;
+		cout << "\tlevel: " << where_it->level << endl;
+		cout << "\toperator1: " << where_it->operator1 << endl;
+		cout << "\toperation: " << where_it->operation << endl;
+		cout << "\toperator2: " << where_it->operator2 << endl;
+
+		++where_it;
+	}
+
+	// 输出GROUP BY
+	cout << "GROUP BY:" << endl;
+	vector<string>::const_iterator group_it = query.group_by.begin();
+	while(query.group_by.end() != group_it) {
+		cout << "\t" << *group_it << endl;
+
+		++group_it;
+	}
+
+	// 输出ORDER BY
+	cout << "ORDET BY:" << endl;
+	vector<order>::const_iterator order_it = query.order_by.begin();
+	while(query.order_by.end() != order_it) {
+		cout << "\tname: " << order_it->name << endl;
+		cout << "\ttype: " << order_it->type << endl;
+
+		++order_it;
+	}
+
+}

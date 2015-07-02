@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
 
 		else {
 			query = argstr;
-			
+
 		}
 
 	}
@@ -77,8 +77,10 @@ int main(int argc, char **argv) {
 	//string query = string("select count(distinct(id)), name from example.csv where id > 10 and id < 100 or (name = 'eddie' or name = 'yuhui') group by id, name");
 	query = string("select count(distinct(id)), name from example.csv where id > 10 and id < 100 or (name = 'eddie' or name = 'yuhui') order by id, name asc");
 	cout << query << endl;
+
 	sql result = sql();
 	sql_init(query, result);
+	print_sql(result);
 
         ifstream infile("../example.csv");
         line_iterator(infile, with_header, delimeter);

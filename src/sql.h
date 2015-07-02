@@ -135,4 +135,8 @@ vector<string> get_group(vector<string> groups);
 
 // 处理order by 语句
 vector<order> get_order(vector<string> orders);
+
+// 输出结构话后的sql
+void print_sql(const sql &query);
+
 #endif
